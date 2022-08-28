@@ -84,13 +84,11 @@ const sumPrice = computed(() => {
 
 const increaseQty = () => {
   qty.value++
-  emits('update:price', sumPrice.value)
 }
 
 const decreaseQty = () => {
   if (qty.value > 0) {
     qty.value--
-    emits('update:price', sumPrice.value)
   }
 }
 

@@ -9,7 +9,9 @@
           <img :src="cardType" class="h-[50px] w-[74px] mr-5 mt-5 rounded-md">
         </div>
         <div class="h-auto flex flex-row justify-center mt-24 backdrop-blur-[4px]">
-          <span v-for="(quater,index) in cardArray" :key="index" 
+          <span 
+            v-for="(quater,index) in cardArray"
+            :key="index" 
             class="flex justify-center w-full px-6 text-2xl text-white tracking-widest"
           >
             {{ quater }}
@@ -20,13 +22,13 @@
             <span class="flex w-full text-white text-base ml-9 mt-5 font-bold tracking-tight">
               Card holder
             </span>
-            <span class="flex w-full justify-end text-black text-base mr-9 mt-5 font-bold tracking-tight">
+            <span class="flex w-full justify-end text-white text-base mr-9 mt-5 font-bold tracking-tight">
               Expires
             </span>
           </div>
           <div class="flex flex-row justify-center mt-1">
             <span class="flex w-full text-white text-lg uppercase ml-9 font-bold tracking-widest">
-              {{ checkedName.length > 0 ? checkedName : 'full name' }}
+              {{ checkedName }}
             </span>
             <span class="flex w-auto justify-end text-black text-lg uppercase mr-9 font-bold tracking-widest">
               {{ props.expirationDate.length > 0 ? expiration[0] + '/' + (expiration[1] ? expiration[1] : 'YY') : 'mm/yy' }}
@@ -79,7 +81,9 @@ const cardType = computed(() => {
 })
 
 const checkedName = computed(() => {
-  return props.name.length > 20 ? props.name.substring(0, 20) + '...' : props.name
+  return props.name.length > 0 ? 
+    props.name.length > 20 ? props.name.substring(0, 20) + '...' : props.name :
+    'full name'
 })
 
 const expiration = computed(() => {
