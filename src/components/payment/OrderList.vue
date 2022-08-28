@@ -5,7 +5,12 @@
       v-for="(item, index) in props.order"
       :key = item.name
       :id="index"
-      :name="item.name" :description="item.description" v-model:price="item.price" :img="item.img" :oneItemPrice="item.oneItemPrice" v-model:qty="item.qty"
+      :name="item.name" 
+      :description="item.description" 
+      :img="item.img" 
+      :oneItemPrice="item.oneItemPrice" 
+      v-model:price="item.price" 
+      v-model:qty="item.qty"
       @remove="removeItem(index)"
     />
     <div v-else>
@@ -44,10 +49,12 @@ const orderList = computed({
 })
 
 const calculate = () => {
-  let sum = 0
-  orderList.value.forEach(item => {
-    sum += item.price
-  })
+  // let sum = 0
+  // orderList.value.forEach(item => {
+  //   sum += item.price
+  // })
+
+  const sum = orderList.value.reduce((p, c) =>  p + c.price, 0)
   emits('update:totalPrice', Math.round(sum * 100)/100)
   totalSum.value = Math.round(sum * 100)/100
 }
@@ -56,11 +63,7 @@ const removeItem = (index) => {
   orderList.value.splice(index, 1)
 }
 
-onMounted(() => {
-  calculate()
-})
-
 watch(() => orderList.value, () => {
   calculate()
-}, {deep: true})
+}, {deep: true, immediate: true})
 </script>

@@ -103,17 +103,7 @@ const paymentDone = () => {
 }
 
 onMounted(() => {
-  for (let i=1; i <= 3; i++) {
-    let rPrice = Math.round(i*Math.random()*100)/100
-    order.value.push({
-      name: `Item #${i}`,
-      description: 'B:A '.repeat(4 - i),
-      price: rPrice,
-      img: i === 3 ? 'chair.jpg' : 'Logo.png',
-      oneItemPrice: rPrice,
-      qty: 1
-    })
-  }
+  refreshData()
 })
 
 watch(() => cvc.value, () => {
