@@ -3,8 +3,12 @@
     <div class="flex flex-row">
       <img :src="'/' + props.img" class="h-14 w-14 rounded-md">
       <div class="flex flex-col ml-4">
-        <div class="w-48 flex justify-start">{{ props.name }}</div>
-        <div class="text-sm flex justify-start mt-2">{{ props.description }}</div>
+        <div class="w-48 flex justify-start">
+          {{ props.name }}
+        </div>
+        <div class="text-sm flex justify-start mt-2">
+          {{ props.description }}
+        </div>
       </div>
       <div class="w-full flex justify-end">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor" @click="emits('remove')" style="cursor:pointer">

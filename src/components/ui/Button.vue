@@ -2,13 +2,14 @@
   <button 
     :class="props.class"
     :style="{width: props.width, height: props.height}"
-    @click="props.to.length > 0 ? goTo(props.to) : null"
+    @click="moveTo"
   >
     <slot/>
   </button>
 </template>
 
 <script setup>
+import { computed } from 'vue'
 import router from '@/router'
 
 const props = defineProps({
@@ -37,6 +38,14 @@ const props = defineProps({
       return '90px'
     }
   }
+})
+
+
+// Я не уверен, что это супер правильное решение. Более того, я не уверен, что оно нужное. Но зато в темплейте нет никаких условий
+const moveTo = computed(() => {
+  return props.to.length > 0 ? 
+    goTo(props.to) : 
+    null
 })
 
 const goTo = (link) => {

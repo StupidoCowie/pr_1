@@ -52,7 +52,10 @@
         </div>
       </Card>
       <Card :width="'450px'" :label="'Order Summary'" class="mt-5 ml-5">
-        <OrderList v-model:totalPrice="totalPrice" v-model:order="order"/>
+        <OrderList 
+          v-model:totalPrice="totalPrice" 
+          v-model:order="order"
+        />
       </Card>
     </div>
   </div>

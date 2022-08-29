@@ -30,8 +30,8 @@
             <span class="flex w-full text-white text-lg uppercase ml-9 font-bold tracking-widest">
               {{ checkedName }}
             </span>
-            <span class="flex w-auto justify-end text-black text-lg uppercase mr-9 font-bold tracking-widest">
-              {{ props.expirationDate.length > 0 ? expiration[0] + '/' + (expiration[1] ? expiration[1] : 'YY') : 'mm/yy' }}
+            <span class="flex w-auto justify-end text-white text-lg uppercase mr-9 font-bold tracking-widest">
+              {{ expiration }}
             </span>
           </div>
         </div>
@@ -87,6 +87,9 @@ const checkedName = computed(() => {
 })
 
 const expiration = computed(() => {
-  return props.expirationDate.split('/')
+  let eDate = props.expirationDate.split('/')
+  return props.expirationDate.length > 0 ? 
+    eDate[0] + '/' + (eDate[1] ? eDate[1] : 'YY') : //expiration[0] + '/' + (expiration[1] ? expiration[1] : 'YY'
+    'mm/yy' 
 })
 </script>
