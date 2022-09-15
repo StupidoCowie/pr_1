@@ -1,0 +1,15 @@
+{
+	"arrTest": [ 99.95, 45.49, 78.99 ],
+	"boolTest": true,
+	"nullTest": null,
+	"numTest": 123,
+	"objTest": {
+		"a": "a",
+		"insideObj": {
+			"d": true,
+			"ext": [ "str", "far" ]
+		},
+		"e": "f",
+		"string": "Hello world"
+	}
+}

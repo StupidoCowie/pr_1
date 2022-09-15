@@ -116,7 +116,7 @@ watch(() => cvc.value, () => {
 })
 
 watch(() => expirationDate.value, (newVal, oldVal) => {
-  if (newVal.match(new RegExp('[a-zA-Z]', 'g'))) {
+  if (newVal.match(new RegExp('[a-zA-Zа-яА-Я]', 'g'))) {
     expirationDate.value = oldVal
   }
   else if (newVal.length === 2 && oldVal.length === 1) {

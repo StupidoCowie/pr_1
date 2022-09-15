@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import MainPage from '@/components/MainPage.vue'
 import CheckoutPage from '@/components/payment/CheckoutPage.vue'
+import JsonEditor from '@/components/jsonEditor/jsonEditor.vue'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -17,6 +18,13 @@ const router = createRouter({
       component: CheckoutPage,
       meta: {
         title: 'Checkout'
+      }
+    },
+    {
+      path: '/jsoneditor',
+      component: JsonEditor,
+      meta: {
+        title: 'JSON Editor'
       }
     },
   ]
