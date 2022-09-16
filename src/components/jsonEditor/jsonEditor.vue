@@ -11,24 +11,11 @@
     </div>
     <div>
 			<Card :width="'850px'" :label="'JSON Editor'" class="mt-5">
-				<div>
-					<div
-						v-for="(val, key) in json"
-						:key="key"
-						class="flex items-start"
-						:class="object(val) ? 'flex-col' : 'flex-row'"
-					>
-						<div
-						>
-							{{ key  }}:&nbsp;
-						</div>
-						<div
-							class="ml-5"
-						>
-							{{ val }}
-						</div>
-					</div>
-				</div>
+				<JsonNodes
+					:value="jsonTree.label"
+					:json="jsonTree.nodes"
+					:margin="0"
+				></JsonNodes>
 			</Card>
 		</div>
 	</div>
@@ -45,17 +32,14 @@
 <script setup>
 import Card from '@/components/ui/Card.vue'
 import Button from '@/components/ui/Button.vue'
+import JsonNodes from '@/components/jsonEditor/jsonNodes.vue'
+
 import json from '@/assets/test.json'
 
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 
 import { isArray } from '@vue/shared'
 
-// for (let i in json) {
-// 	if (isArray(json[i])) {
-// 		console.log(json[i])
-// 	}
-// }
 
 const jsonTree = ref({
 	label: 'JSON',
@@ -64,10 +48,18 @@ const jsonTree = ref({
 
 const convert = (key, val, node) => {
 	if (typeof val !== 'object' || isArray(val) || val === null) {
-		node.nodes.push({
-			label: key,
-			nodes: val
-		})
+		if(isArray(val)) {
+			node.nodes.push({
+				label: key,
+				nodes: val
+			})
+		}
+		else {
+			node.nodes.push({
+				label: key,
+				nodes: [val]
+			})
+		}
 	}
 	else {
 		node.nodes.push({
@@ -80,16 +72,11 @@ const convert = (key, val, node) => {
 	}
 }
 
-for (let key in json) {
-	convert(key, json[key], jsonTree.value)
-}
-console.log(jsonTree.value)
-
-const object = (val) => {
-	if (typeof val === 'object' && val !== null) {
-		return true
+onMounted(() => {
+	for (let key in json) {
+		convert(key, json[key], jsonTree.value)
 	}
-	return false
-}
+	console.log(jsonTree.value)
+})
 
 </script>

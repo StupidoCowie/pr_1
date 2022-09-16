@@ -8,7 +8,7 @@
     <div class="flex flex-row justify-center">
       <div>
         <Button 
-          :class="'shadow-md bg-[#a1d6d6] hover:bg-[#4be0e0] rounded-md hover:shadow-xl mt-5'" 
+          :class="'shadow-md bg-[#a1d6d6] hover:bg-[#4be0e0] rounded-md hover:shadow-xl'" 
           :width="'120px'" 
           :height="'30px'" 
           :to="'/paycheck'"
@@ -18,7 +18,7 @@
       </div>
       <div class="ml-5">
         <Button 
-          :class="'shadow-md bg-[#a1d6d6] hover:bg-[#4be0e0] rounded-md hover:shadow-xl mt-5'" 
+          :class="'shadow-md bg-[#a1d6d6] hover:bg-[#4be0e0] rounded-md hover:shadow-xl'" 
           :width="'120px'" 
           :height="'30px'" 
           :to="'/jsoneditor'"

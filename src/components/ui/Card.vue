@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="mb-10">
     <h1 class="text-3xl pb-4 font-bold text-[#1b5238]">{{ props.label }}</h1>
     <div 
       class="text-center text-xl bg-white rounded-md shadow-xl px-8 py-6"

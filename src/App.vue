@@ -5,10 +5,13 @@ import Footer from '@/components/ui/Footer.vue'
 </script>
 
 <template>
-  <div>
+  <div class="flex flex-col min-h-screen">
     <Header />
 
-    <router-view v-slot="{ Component }">
+    <router-view 
+      v-slot="{ Component }"
+      class="flex-grow"
+    >
       <transition name="fade" mode="out-in">
         <component :is="Component" />
       </transition>

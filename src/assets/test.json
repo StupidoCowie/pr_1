@@ -6,7 +6,7 @@
 	"objTest": {
 		"a": "a",
 		"insideObj": {
-			"d": true,
+			"d": false,
 			"ext": [ "str", "far" ]
 		},
 		"e": "f",
