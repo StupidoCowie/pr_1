@@ -14,6 +14,7 @@
 				<JsonNodes
 					:value="jsonTree.label"
 					:json="jsonTree.nodes"
+					:objectable="true"
 					:margin="0"
 				></JsonNodes>
 			</Card>
@@ -73,10 +74,11 @@ const convert = (key, val, node) => {
 }
 
 onMounted(() => {
+	// console.log(json)
 	for (let key in json) {
 		convert(key, json[key], jsonTree.value)
 	}
-	console.log(jsonTree.value)
+	// console.log(jsonTree.value)
 })
 
 </script>
