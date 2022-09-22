@@ -11,5 +11,11 @@
 		},
 		"e": "f",
 		"string": "Hello world"
-	}
+	},
+	"ArrOfArrs": [
+		[123, 332, 623],
+		["asd", "trwq", "dsc"]
+	],
+	"EmptyArr": [],
+	"EmptyObj": {}
 }

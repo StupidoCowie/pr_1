@@ -13,10 +13,11 @@
 			<Card :width="'850px'" :label="'JSON Editor'" class="mt-5">
 				<JsonNodes
 					:value="jsonTree.label"
+					:type="jsonTree.type"
 					:json="jsonTree.nodes"
 					:objectable="true"
 					:margin="0"
-				></JsonNodes>
+				/>
 			</Card>
 		</div>
 	</div>
@@ -24,10 +25,12 @@
 
 <!-- 
 	TODO: 
-		1) Readable view for JSON
-		2) Option to add new key-value pairs
-		3) Option to change existing key-value pairs
-		4) Some design things to underline types, values, etc.
+		DONE) Readable view for JSON
+		DONE) Option to add new key-value pairs
+		3) Option to change existing key-value pairs AND keys only
+		4) Option to delete chosen key-value pair
+		+) Make NewNode dialog kind of persistent
+		+) Some design things to underline types, values, etc.
 -->
 
 <script setup>
@@ -44,20 +47,27 @@ import { isArray } from '@vue/shared'
 
 const jsonTree = ref({
 	label: 'JSON',
+	type: 'object',
 	nodes: []
 })
 
 const convert = (key, val, node) => {
+	// console.log(val)
 	if (typeof val !== 'object' || isArray(val) || val === null) {
 		if(isArray(val)) {
 			node.nodes.push({
 				label: key,
-				nodes: val
+				type: 'array',
+				nodes: []
+			})
+			val.forEach((el, ind) => {
+				convert(ind.toString(), el, node.nodes[node.nodes.length - 1])
 			})
 		}
 		else {
 			node.nodes.push({
 				label: key,
+				type: val === null ? 'null' : typeof val,
 				nodes: [val]
 			})
 		}
@@ -65,6 +75,7 @@ const convert = (key, val, node) => {
 	else {
 		node.nodes.push({
 			label: key,
+			type: 'object',
 			nodes: []
 		})
 		for (let el in val) {
@@ -78,7 +89,7 @@ onMounted(() => {
 	for (let key in json) {
 		convert(key, json[key], jsonTree.value)
 	}
-	// console.log(jsonTree.value)
+	console.log(jsonTree.value)
 })
 
 </script>
