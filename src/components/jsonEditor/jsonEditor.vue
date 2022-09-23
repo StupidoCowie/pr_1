@@ -17,6 +17,7 @@
 					:json="jsonTree.nodes"
 					:objectable="true"
 					:margin="0"
+					:deletable="false"
 				/>
 			</Card>
 		</div>
@@ -27,6 +28,7 @@
 	TODO: 
 		DONE) Readable view for JSON
 		DONE) Option to add new key-value pairs
+		2.1) Prevent adding of key-value pair if key already exists
 		3) Option to change existing key-value pairs AND keys only
 		4) Option to delete chosen key-value pair
 		+) Make NewNode dialog kind of persistent
