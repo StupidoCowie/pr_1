@@ -51,7 +51,7 @@ import { ref, computed } from 'vue'
 const props = defineProps({
 	activate: Boolean,
 	label: String,
-	// type: String,
+	type: String,
 	node: Object
 })
 
@@ -82,17 +82,22 @@ const nodes = computed({
 	get(){
 		return props.node
 	},
-	set(value){
-		console.log(value)
+	set(value) {
 		emits('update:node', value)
 	}
 })
 
+const getType = computed(() => {
+	return props.type
+})
+
 const deleteNode = () => {
-	nodes.value = nodes.value.filter(e => {
-		console.log(e)
-		e.label !== nodeToDelete.value
-	})
+	nodes.value.splice(nodes.value.indexOf(nodes.value.filter(e => e.label === nodeToDelete.value)[0]), 1)
+	if (getType.value === 'array') {
+		nodes.value.forEach((el, index) => {
+			el.label = index
+		})
+	}
 
 	closeDialog()
 }

@@ -13,10 +13,10 @@
 					{{ dialogLabel }} - {{ getType }}
 				</div>
 				<div 
-					class="flex justify-center my-2"
+					class="flex justify-center"
 				>
 					<select 
-						class="w-full focus:outline-none rounded-md"
+						class="w-full focus:outline-none rounded-md mb-2"
 						v-model="selectedOpt"
 					>
 						<option
@@ -29,7 +29,7 @@
 				</div>
 				<div
 					v-if="isObject"
-					class="flex justify-center mb-2"
+					class="flex justify-center mb-1"
 				>
 					<input 
 						class="rounded-md focus:outline-none pl-2"
@@ -39,20 +39,23 @@
 				</div>
 				<div 
 					v-if="valReq"
-					class="flex justify-center mb-2"
+					class="flex justify-center"
 				>
-					<select 
+					<div
 						v-if="isBoolean"
-						class="w-full focus:outline-none rounded-md"
-						v-model="newVal"
+						class="flex justify-center"
 					>
-						<option 
-							v-for="opt in booleanChoice"
-							:value="opt"
+						<input 
+							class="mt-[6px] mr-1"
+							type="checkbox"
+							id="boolType"
+							v-model="newVal"
 						>
-							{{ opt }}
-						</option>
-					</select>
+						<label 
+							class="flex content-center"
+							for="boolType">{{ newVal }}
+						</label>
+					</div>
 					<input 
 						v-else
 						class="rounded-md pl-2"
@@ -61,7 +64,7 @@
 					>
 				</div>
 				<div 
-					class="flex justify-center"
+					class="flex justify-center mt-2"
 				>
 					<button
 						class="bg-[#a1d6d6] shadow-md hover:bg-[#42cc4e] rounded-md hover:shadow-xl w-20 h-8"
@@ -98,11 +101,10 @@ const emits = defineEmits([
 
 const newKey = ref('')
 const newVal = ref('')
-const booleanChoice = ref(['true', 'false'])
 
 const openDialog = computed({
 	get() {
-		console.log(node.value)
+		// console.log(node.value)
 		return props.activate
 	},
 	set(value) {
@@ -137,7 +139,11 @@ const node = computed({
 
 const addElement = () => {
 	let valToAdd = setValue()
-	// console.log(valToAdd)
+
+	if (getType.value !== 'array' && node.value.filter(e => e.label === newKey.value).length > 0) {
+		alert(`${newKey.value} is already exists.`)
+		return
+	}
 	node.value.push({
 		label: getType.value === 'array' ? node.value.length.toString() : newKey.value,
 		type: selectedOpt.value.toLowerCase(),
@@ -184,7 +190,7 @@ const closeDialog = () => {
 
 watch(() => selectedOpt.value, () => {
 	if (isBoolean.value) {
-		newVal.value = true
+		newVal.value = 'true'
 	}
 })
 </script>

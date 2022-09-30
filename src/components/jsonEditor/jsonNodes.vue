@@ -1,32 +1,32 @@
 <template>
 	<hr>
-	<div class="flex flex-row">
-		<!-- <div
-			v-if="isDeletable && !isOpen"
-			class="flex items-center"
+	<div 
+		class="flex flex-row"
+	>
+		<div
+			v-if="isChangeable"
+			class="flex mt-1 mr-1"
 			style="cursor: pointer;"
+			:style="shift"
 		>
 			<svg 
-				xmlns="http://www.w3.org/2000/svg" 
-				viewBox="0 0 20 20" 
-				fill="red" 
-				class="w-5 h-5"
-				@click="deleteElementCheck"
+				xmlns="http://www.w3.org/2000/svg"
+				viewBox="0 0 20 20"
+				fill="currentColor"
+				class="w-4 h-4"
+				@click="editElementOpen"
 			>
 				<path 
-					fill-rule="evenodd" 
-					d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 
-						10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 
-						10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" 
-					clip-rule="evenodd" />
+					d="M2.695 14.763l-1.262 3.154a.5.5 0 00.65.65l3.155-1.262a4 4 0 
+					001.343-.885L17.5 5.5a2.121 2.121 0 00-3-3L3.58 13.42a4 4 0 00-.885 1.343z" 
+				/>
 			</svg>
-		</div> -->
+		</div>
 		<div
 			v-if="objectableOp"
 		>
 			<div 
 				class="flex flex-row"
-				:style="shift"
 			>
 				<div 
 					v-if="isObject(nodes)"
@@ -85,7 +85,7 @@
 							viewBox="0 0 20 20" 
 							fill="green" 
 							class="w-5 h-5 ml-2" 
-							@click="newElementCheck"
+							@click="newElementOpen"
 						>
 							<path 
 								fill-rule="evenodd" 
@@ -99,7 +99,7 @@
 							viewBox="0 0 20 20" 
 							fill="red" 
 							class="w-5 h-5 ml-2"
-							@click="deleteElementCheck"
+							@click="deleteElementOpen"
 						>
 							<path 
 								fill-rule="evenodd" 
@@ -114,20 +114,22 @@
 			<jsonNodes
 				v-if="isOpen"
 				v-for="node in nodes"
-				:json="nullCheck(node)"
-				:type="node.type"
-				:value="nodeCheck(node)"
+				:json="node.nodes"
+				v-model:type="node.type"
+				v-model:value="node.label"
 				:objectable="suitableObj(node)"
-				:margin="marginValue + 36"
-				deletable
+				:margin="marginValue"
+				changeable
 			/>
 		</div>
 		<div 
 			v-else 
 			class="flex flex-row"
-			:style="shift"
+			:style="innerShift"
 		>
-			<div class="flex items-start">
+			<div 
+				class="flex items-start"
+			>
 				<input
 					class="w-28 bg-gray-200 focus:outline-none"
 					:class="enchancedColorClass"
@@ -142,7 +144,7 @@
 			>
 				<input
 					class="bg-gray-200 focus:outline-none"
-					:class="colorClass"
+					:class="pickColor()"
 					:value="nodeCheck(nodes)"
 					style="cursor: unset"
 					readonly
@@ -163,7 +165,15 @@
 		v-if="deleteElement"
 		v-model:activate="deleteElement"
 		:label="valueValue"
-		:node="nodes"
+		:type="getType"
+		v-model:node="nodes"
+	/>
+	<EditNodeDialog
+		v-if="editElement"
+		v-model:activate="editElement"
+		v-model:label="valueValue"
+		v-model:type="getType"
+		v-model:node="nodes"
 	/>
 </template>
 
@@ -172,6 +182,7 @@ import { ref, computed } from 'vue'
 
 import NewNodeDialog from '@/components/jsonEditor/NewNodeDialog.vue'
 import DeleteNodeDialog from '@/components/jsonEditor/DeleteNodeDialog.vue'
+import EditNodeDialog from '@/components/jsonEditor/EditNodeDialog.vue'
 
 const props = defineProps({
 	json: Object,
@@ -182,50 +193,43 @@ const props = defineProps({
 	type: String,
 	margin: Number,
 	objectable: Boolean,
-	deletable: Boolean
+	changeable: Boolean
 })
 
+const emits = defineEmits([
+	'update:json',
+	'update:type',
+	'update:value'
+])
 
 const isOpen = ref(false)
 const newElement = ref(false)
 const deleteElement = ref(false)
+const editElement = ref(false)
 
-const colorClass = computed(() => {
-	if (typeof nodes.value === 'object') {
-		return pickColor(nodes.value[0])
-	}
-	else {
-		return pickColor(valueValue.value)
-	}
+const isChangeable = computed(() => {
+	return props.changeable
 })
 
 const enchancedColorClass = computed(() => {
-	return nodes.value ? 'text-black' : colorClass.value
+	return nodes.value ? 'text-black' : pickColor()
 })
 
-// const isDeletable = computed(() => {
-// 	return props.deletable
-// })
-
-const pickColor = (element) => {
-	if (typeof element === 'number') {
-		return 'text-red-600'
-	}
-	else if (typeof element === 'string') {
-		return 'text-green-600'
-	}
-	else if (typeof element === 'boolean') {
-		return 'text-yellow-600'
-	}
-	else if (element === null) {
-		return 'text-blue-600'
+const pickColor = () => {
+	switch (getType.value) {
+		case 'number':
+			return 'text-red-600'
+		case 'string':
+			return 'text-green-600'
+		case 'boolean':
+			return 'text-yellow-600'
+		case 'null':
+			return 'text-blue-600'
 	}
 }
 
-const objectableOp = computed({
-	get() {
-		return props.objectable
-	}
+const objectableOp = computed(() => {
+	return props.objectable
 })
 
 const marginValue = computed(() => {
@@ -233,25 +237,39 @@ const marginValue = computed(() => {
 })
 
 const shift = computed(() => {
-	// if (isOpen.value && isDeletable.value) {
-	// 	return `margin-left: ${marginValue.value + 20}px;`
-	// }
-	return objectableOp.value ? `margin-left: ${marginValue.value}px;` : `margin-left: ${marginValue.value + 20}px;`
+	return `margin-left: ${marginValue.value}px;`
 })
 
-const valueValue = computed(() => {
-	return props.value
+const innerShift = computed(() => {
+	return 'margin-left: 20px;'
+})
+
+const valueValue = computed({
+	get() {
+		return props.value
+	},
+	set(value) {
+		emits('update:value', value)
+	}
 })
 
 const nodes = computed({
 	get() {
 		// console.log(props)
 		return props.json
+	},
+	set(value) {
+		emits('update:json', value)
 	}
 })
 
-const getType = computed(() => {
-	return props.type
+const getType = computed({
+	get() {
+		return props.type
+	},
+	set(value) {
+		emits('update:type', value)
+	}
 })
 
 const nodeCheck = (node) => {
@@ -262,31 +280,27 @@ const nodeCheck = (node) => {
 	return node.label ? node.label : node
 }
 
-const nullCheck = (node) => {
-	if (node !== null) {
-		return node.nodes
-	}
-}
-
 const isObject = (node) => {
 	return typeof node === 'object' && node !== null
 }
 
 const suitableObj = (node) => {
 	return node.type === 'array' || node.type === 'object'
-	// return isObject(node.nodes) && node.nodes.length > 1
 }
 
 const toggleNodes = () => {
 	isOpen.value = !isOpen.value
 }
 
-const newElementCheck = () => {
+const newElementOpen = () => {
 	newElement.value = !newElement.value
 }
 
-const deleteElementCheck = () => {
-	console.log(nodes.value)
+const deleteElementOpen = () => {
 	deleteElement.value = !deleteElement.value
+}
+
+const editElementOpen = () => {
+	editElement.value = !editElement.value
 }
 </script>
