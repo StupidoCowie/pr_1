@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import MainPage from '@/components/MainPage.vue'
 import CheckoutPage from '@/components/payment/CheckoutPage.vue'
 import JsonEditor from '@/components/jsonEditor/jsonEditor.vue'
+import graphsMainPage from '@/components/graphs/graphsMainPage.vue'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -27,6 +28,13 @@ const router = createRouter({
         title: 'JSON Editor'
       }
     },
+    {
+      path: '/graphs',
+      component: graphsMainPage,
+      meta: {
+        title: 'Graphs Test'
+      }
+    }
   ]
 })
 

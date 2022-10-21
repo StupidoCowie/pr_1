@@ -23,6 +23,10 @@ btns.value.push({
   link: '/',
 },
 {
+  label: 'Graphs',
+  link: '/graphs'
+},
+{
   label: 'Test',
   link: '/test'
 })

@@ -9,6 +9,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "cytoscape": "^3.23.0",
+    "cytoscape-dagre": "^2.4.0",
+    "cytoscape-popper": "^2.0.0",
+    "tippy.js": "^6.3.7",
     "vue": "^3.2.37",
     "vue-router": "^4.1.3"
   },
